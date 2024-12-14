@@ -57,3 +57,28 @@ def diffusion_growth_update_square(i,j, T, delta_t,delta_x, N, growth_rate):
     #based on delta_t, and growth_per_cell, we s
 
 # diffusion(0.4,1)
+
+
+
+#Paper 1
+#Balois, T., Amar, M. Morphology of melanocytic lesions in situ. Sci Rep 4, 3622 (2014). https://doi.org/10.1038/srep03622
+def mmlinsitu_update_square(i,j,T,delta_t,delta_x,N,kappa=0,beta=0.2,phi=0.6):
+    h = delta_x
+    #Need boundary conditions for i = 0,N or j = 0,N
+    #setting boundary to 0
+    if i == 0 or j == 0 or i == N - 1 or j == N - 1:
+        return 0
+    A = T[i+1][j] + T[i-1][j] + T[i][j+1] + T[i][j-1] - 4*T[i][j]
+    B = -kappa*(1-phi)*T[i][j] - T[i][j]*phi + beta*(1 - T[i][j])
+    #this is the only difference from diffusion
+    # A += growth_rate*T[i][j]
+    T_new = A*delta_t/delta_x + B
+    return T_new
+
+def mmlinsitu(delta_t, D, c, grid, delta_x):
+    dummy = np.zeros((grid.size,grid.size))
+    for i in range(grid.size):
+        for j in range(grid.size):
+            dummy[i][j] = mmlinsitu_update_square(i,j,grid.array,delta_t,delta_x,grid.size)
+    grid.array = dummy
+    return grid

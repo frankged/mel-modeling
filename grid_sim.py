@@ -94,7 +94,7 @@ print(grid.array)
 grid.display()
 
 # grid.animate(100, functions.diffusion)
-grid.animate(100, functions.diffusion_plus_growth)
+grid.animate(100, functions.mmlinsitu)
 
 # grid_update = functions.diffusion(1, 1, 1, grid, 1)
 
